@@ -1,5 +1,5 @@
 FROM debian:jessie
-MAINTAINER Charles Steinkuehler <charles@steinkuehler.net>
+MAINTAINER Michael Haberler <haberlerm@gmail.com>
 
 ENV TERM dumb
 
@@ -29,15 +29,10 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
 	protobuf-compiler \
 	python-protobuf \
 	python-pip && \
-    pip install intelhex
-
-
-# Create a non-root user for builds
-RUN adduser --disabled-password --gecos '' builder && \
-    usermod builder -aG staff
-
-# Set the locale, Quartus expects en_US.UTF-8
-RUN echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
+    pip install intelhex && \
+    adduser --disabled-password --gecos '' builder && \
+    usermod builder -aG staff && \
+    echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
     locale-gen
 
 ENV LANG en_US.UTF-8
