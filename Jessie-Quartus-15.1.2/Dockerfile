@@ -1,5 +1,5 @@
-FROM cdsteinkuehler/jessie-quartus-base:latest
-MAINTAINER Charles Steinkuehler <charles@steinkuehler.net>
+FROM haberlerm/jessie-quartus-base:latest
+MAINTAINER Michael Haberler <haberlerm@gmail.com>
 
 USER root
 
@@ -15,26 +15,21 @@ ADD http://download.altera.com/akdlm/software/acdsinst/15.1.2/193/update/Quartus
 
 # Verify Quartus files
 ADD sha1sums.txt /tmp/
-RUN cd /tmp/ && sha1sum -c sha1sums.txt
-
-# Fix file permissions
-RUN cd /tmp/ && \
+RUN cd /tmp/ && sha1sum -c sha1sums.txt  && \
     chmod +x *.run && \
     chmod +r *
 
 # Install Quartus
 USER builder
-RUN cd /tmp/ && \
-    ./QuartusLiteSetup-15.1.0.185-linux.run --mode unattended
 
 # Add Quartus bin directorys to the path
 ENV PATH $PATH:/home/builder/altera_lite/15.1/quartus/bin:/home/builder/altera_lite/15.1/quartus/sopc_builder/bin
 
-# Enable talkback (required to run SoC builds)
-RUN xvfb-run -a tb2_install --enable
 
-# Install sopc2dts
-RUN cd && \
+RUN cd /tmp/ && \
+    ./QuartusLiteSetup-15.1.0.185-linux.run --mode unattended && \
+    xvfb-run -a tb2_install --enable && \
+    cd && \
     git clone --depth 1 https://github.com/altera-opensource/sopc2dts && \
     make -C sopc2dts && \
     mkdir -p /usr/local/share/sopc2dts && \
