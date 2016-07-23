@@ -23,6 +23,7 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
         libxrender1 \
         locales \
         make \
+        ruby \
         ruby-dev \
         xauth \
         xvfb \
