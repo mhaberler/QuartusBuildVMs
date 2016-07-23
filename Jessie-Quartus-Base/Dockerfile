@@ -14,6 +14,7 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
     apt-get update && \
     apt-get -y install \
         ca-certificates \
+        gcc \
         git \
 	openjdk-7-jdk \
         libfontconfig1 \
@@ -22,6 +23,7 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
         libxrender1 \
         locales \
         make \
+        ruby-dev \
         xauth \
         xvfb \
 	pkg-config \
@@ -33,7 +35,9 @@ RUN echo 'APT::Install-Recommends "0";\nAPT::Install-Suggests "0";' > \
     adduser --disabled-password --gecos '' builder && \
     usermod builder -aG staff && \
     echo "en_US.UTF-8 UTF-8" >> /etc/locale.gen && \
-    locale-gen
+    locale-gen && \
+    gem install fpm
+
 
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US:en
